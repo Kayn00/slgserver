@@ -101,7 +101,7 @@ func (this *ServerConn) wsReadLoop() {
 			}else{
 				log.DefaultLog.Info("secretKey not found client need handshake", zap.Error(err))
 				this.Handshake()
-				return
+				continue
 			}
 		}
 
@@ -175,6 +175,7 @@ func (this *ServerConn) write(msg interface{}) error{
 }
 
 func (this *ServerConn) Close() {
+	log.DefaultLog.Info("serverConn close", zap.String("addr", this.wsSocket.RemoteAddr().String()))
 	this.wsSocket.Close()
 	if !this.isClosed {
 		this.isClosed = true
